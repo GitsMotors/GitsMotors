@@ -654,6 +654,626 @@
 </script>
 </body>
 </html>
+      text-transform: uppercase; font-weight: 600; transition: border-color .2s, background .2s;
+    }
+    .cart-toggle:hover { border-color: var(--red); }
+    .cart-badge {
+      position: absolute; top: -7px; right: -7px;
+      background: var(--red); color: #fff; font-size: 0.58rem;
+      width: 17px; height: 17px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
+    }
+    .cart-badge.hidden { display: none; }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 400; opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-drawer {
+      position: fixed; top: 0; right: -420px; width: 420px; max-width: 100vw;
+      height: 100vh; background: #111; z-index: 500;
+      display: flex; flex-direction: column;
+      transition: right .35s cubic-bezier(.4,0,.2,1);
+      border-left: 1px solid var(--border);
+    }
+    .cart-drawer.open { right: 0; }
+    .drawer-header {
+      padding: 1.4rem 1.6rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .drawer-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; }
+    .drawer-close { background: none; border: none; color: var(--gray); font-size: 1.4rem; cursor: pointer; padding: 0.2rem 0.5rem; transition: color .2s; }
+    .drawer-close:hover { color: var(--white); }
+    .drawer-items { flex: 1; overflow-y: auto; padding: 1rem 1.6rem; }
+    .drawer-empty { text-align: center; padding: 4rem 1rem; color: var(--gray); font-size: 0.9rem; }
+    .drawer-item {
+      display: grid; grid-template-columns: 64px 1fr auto;
+      gap: 1rem; align-items: center;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+    }
+    .drawer-item-img { width: 64px; height: 50px; object-fit: cover; background: #1a1a1a; display: block; }
+    .drawer-item-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.04em; margin-bottom: 0.2rem; }
+    .drawer-item-price { font-size: 0.8rem; color: var(--red); font-weight: 600; }
+    .drawer-item-right { text-align: right; }
+    .d-qty { display: flex; align-items: center; gap: 0.4rem; justify-content: flex-end; margin-bottom: 0.3rem; }
+    .d-qty-btn { width: 24px; height: 24px; border: 1px solid var(--border); background: none; color: var(--white); cursor: pointer; font-size: 0.9rem; transition: border-color .2s; }
+    .d-qty-btn:hover { border-color: var(--red); }
+    .d-qty-num { font-size: 0.82rem; min-width: 16px; text-align: center; }
+    .d-remove { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: #555; background: none; border: none; cursor: pointer; transition: color .2s; }
+    .d-remove:hover { color: var(--red); }
+    .drawer-footer { padding: 1.4rem 1.6rem; border-top: 1px solid var(--border); background: #0f0f0f; }
+    .drawer-totals { margin-bottom: 1rem; }
+    .drawer-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--gray); margin-bottom: 0.5rem; }
+    .drawer-row.total { color: var(--white); font-weight: 600; font-size: 0.95rem; border-top: 1px solid var(--border); padding-top: 0.6rem; margin-top: 0.4rem; }
+    .drawer-row.total span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--red); }
+
+    /* Checkout button in drawer */
+    .drawer-checkout-btn {
+      width: 100%; background: var(--red); color: #fff; border: none;
+      padding: 1rem; font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 700; cursor: pointer; transition: background .2s;
+      margin-bottom: 0.6rem; display: block; text-align: center; text-decoration: none;
+    }
+    .drawer-checkout-btn:hover { background: var(--red-dark); }
+    .drawer-checkout-btn:disabled { background: #333; cursor: not-allowed; }
+    .drawer-secure { font-size: 0.65rem; color: #555; text-align: center; letter-spacing: 0.05em; }
+
+    /* Individual engine checkout buttons */
+    .engine-stripe-btns { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.8rem; }
+    .stripe-buy-btn {
+      display: block; width: 100%; text-align: center;
+      background: var(--red); color: #fff; text-decoration: none;
+      padding: 0.85rem; font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 700;
+      border: none; cursor: pointer; font-family: 'Barlow', sans-serif;
+      transition: background .2s, transform .15s;
+    }
+    .stripe-buy-btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .stripe-add-btn {
+      display: block; width: 100%; text-align: center;
+      background: transparent; color: var(--white); text-decoration: none;
+      padding: 0.75rem; font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 600;
+      border: 1px solid #444; cursor: pointer; font-family: 'Barlow', sans-serif;
+      transition: border-color .2s, background .2s;
+    }
+    .stripe-add-btn:hover { border-color: var(--red); background: rgba(209,43,43,0.06); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 8rem 3rem 4rem;
+      background: linear-gradient(120deg, rgba(10,10,10,0.95) 55%, rgba(209,43,43,0.08) 100%),
+                  radial-gradient(ellipse at 80% 50%, #1a0808 0%, #0a0a0a 65%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: 'POWER'; position: absolute; right: -2rem; bottom: -3rem;
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(10rem,25vw,22rem);
+      color: rgba(255,255,255,0.025); pointer-events: none; user-select: none;
+    }
+    .hero-tag { font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 1.2rem; animation: fadeUp .6s ease both; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem,9vw,8rem); line-height: 0.92; letter-spacing: 0.04em; max-width: 14ch; margin-bottom: 1.8rem; animation: fadeUp .7s .1s ease both; }
+    .hero h1 em { color: var(--red); font-style: normal; }
+    .hero p { max-width: 42ch; font-size: 1rem; line-height: 1.7; color: #bbb; margin-bottom: 2.8rem; animation: fadeUp .7s .2s ease both; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .7s .3s ease both; }
+    .hero-btn {
+      display: inline-block; background: var(--red); color: #fff;
+      padding: 0.9rem 2.4rem; font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 700; text-decoration: none;
+      border: none; cursor: pointer; font-family: 'Barlow', sans-serif;
+      transition: background .2s, transform .15s;
+    }
+    .hero-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .hero-btn-outline {
+      display: inline-block; background: transparent; color: var(--white);
+      padding: 0.9rem 2.4rem; font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 600; text-decoration: none;
+      border: 1px solid #444; cursor: pointer; font-family: 'Barlow', sans-serif;
+      transition: border-color .2s;
+    }
+    .hero-btn-outline:hover { border-color: var(--red); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+
+    /* Trust bar */
+    .trust-bar {
+      background: #111; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      padding: 1rem 2rem;
+    }
+    .trust-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #666; font-weight: 600; }
+    .trust-item span { color: var(--green); font-size: 0.9rem; }
+
+    /* ── MOTORS ── */
+    #motors { padding: 6rem 3rem; background: var(--charcoal); }
+    .motors-header { margin-bottom: 3rem; }
+    .section-label { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem,5vw,3.4rem); letter-spacing: 0.05em; line-height: 1; }
+    .motors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; }
+
+    .motor-card { background: var(--black); position: relative; overflow: hidden; }
+    .motor-img-wrap { width: 100%; height: 260px; overflow: hidden; background: #111; position: relative; }
+    .motor-img-wrap img { width: 100%; height: 260px; object-fit: cover; display: block; filter: grayscale(20%) brightness(0.85); transition: filter .4s, transform .5s; }
+    .motor-card:hover .motor-img-wrap img { filter: grayscale(0%) brightness(1); transform: scale(1.04); }
+    .motor-img-wrap.img-fallback { display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.12); }
+    .motor-img-wrap.img-fallback::after { content: 'ENGINE PHOTO'; }
+    .fallback-ls53 { background: linear-gradient(135deg,#1a1a1a,#2a1a0a); }
+    .fallback-ls60 { background: linear-gradient(135deg,#1a1a1a,#0a1a2a); }
+    .fallback-hellcat { background: linear-gradient(135deg,#1a0808,#2a0a0a); }
+    .motor-badge { position: absolute; top: 1rem; left: 1rem; background: var(--red); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.28rem 0.7rem; color: #fff; z-index: 1; }
+    .motor-card-body { padding: 1.5rem; border-top: 2px solid var(--red); }
+    .motor-card-body h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 0.15rem; }
+    .motor-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--red); margin-bottom: 0.5rem; }
+    .motor-card-body p { font-size: 0.8rem; color: #999; line-height: 1.6; margin-bottom: 0.2rem; }
+    .motor-specs-mini { display: flex; gap: 1rem; margin: 0.8rem 0 0.2rem; flex-wrap: wrap; }
+    .spec-chip { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #666; background: #111; padding: 0.25rem 0.6rem; border: 1px solid #1e1e1e; }
+
+    /* ── SHIPPING SELECTOR ON CARD ── */
+    .ship-selector { margin: 1rem 0 0.8rem; }
+    .ship-selector-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 0.5rem; }
+    .ship-opts { display: flex; flex-direction: column; gap: 0.4rem; }
+    .ship-opt {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 0.8rem; border: 1px solid var(--border);
+      cursor: pointer; transition: border-color .2s, background .2s;
+      background: #0d0d0d;
+    }
+    .ship-opt:hover { border-color: #333; }
+    .ship-opt.active { border-color: var(--red); background: rgba(209,43,43,0.05); }
+    .ship-opt-left { display: flex; align-items: center; gap: 0.6rem; }
+    .ship-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #555; flex-shrink: 0; transition: all .2s; }
+    .ship-opt.active .ship-dot { border-color: var(--red); background: var(--red); }
+    .ship-opt-name { font-size: 0.78rem; font-weight: 600; }
+    .ship-opt-eta { font-size: 0.68rem; color: var(--gray); }
+    .ship-opt-price { font-size: 0.78rem; font-weight: 600; }
+    .ship-opt-price.free { color: var(--green); }
+
+    /* ── WHY US ── */
+    #why { padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .why-text p { color: #aaa; line-height: 1.8; margin-bottom: 2rem; }
+    .red-divider { width: 44px; height: 3px; background: var(--red); margin: 1rem 0 1.5rem; }
+    .stats { display: flex; gap: 3rem; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; color: var(--red); line-height: 1; }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-top: 0.3rem; }
+    .why-features { display: flex; flex-direction: column; gap: 1.2rem; }
+    .feature { display: flex; gap: 1.1rem; align-items: flex-start; padding: 1.2rem; border: 1px solid #1e1e1e; background: var(--charcoal); transition: border-color .2s; }
+    .feature:hover { border-color: #333; }
+    .feature-icon { width: 34px; height: 34px; flex-shrink: 0; border: 1px solid var(--red); display: flex; align-items: center; justify-content: center; color: var(--red); font-size: 0.9rem; }
+    .feature h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .feature p { font-size: 0.76rem; color: #777; line-height: 1.5; }
+
+    /* ── CONTACT ── */
+    #contact { padding: 6rem 3rem; background: var(--charcoal); text-align: center; }
+    #contact .section-title { margin-bottom: 1rem; }
+    #contact > p { color: #888; margin-bottom: 3rem; }
+    .contact-grid { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; max-width: 680px; margin: 0 auto 2.5rem; }
+    .contact-item { flex: 1; min-width: 160px; padding: 1.8rem 1.2rem; border: 1px solid #1e1e1e; background: var(--black); }
+    .ci-label { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem; font-weight: 700; }
+    .ci-val { font-size: 0.9rem; }
+    .contact-btn { display: inline-block; background: var(--red); color: #fff; padding: 0.9rem 2.4rem; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; text-decoration: none; transition: background .2s; }
+    .contact-btn:hover { background: var(--red-dark); }
+
+    /* ── FOOTER ── */
+    footer { padding: 2rem 3rem; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.12em; }
+    .footer-logo span { color: var(--red); }
+    footer p { font-size: 0.68rem; color: #444; }
+
+    /* ── TOAST NOTIFICATION ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: #1a1a1a; border: 1px solid var(--green); color: var(--white);
+      padding: 0.8rem 1.6rem; font-size: 0.78rem; letter-spacing: 0.08em;
+      z-index: 600; transition: transform .3s ease; white-space: nowrap;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-icon { color: var(--green); font-size: 1rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      #motors, #why, #contact { padding: 4rem 1.5rem; }
+      #why { grid-template-columns: 1fr; gap: 3rem; }
+      footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+      .cart-drawer { width: 100vw; }
+      .trust-bar { gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a class="logo" href="#">GITS<span>.</span>MOTORS</a>
+  <div class="nav-right">
+    <ul>
+      <li><a onclick="scrollTo('#motors')">Motors</a></li>
+      <li><a onclick="scrollTo('#why')">Why Us</a></li>
+      <li><a onclick="scrollTo('#contact')">Contact</a></li>
+    </ul>
+    <button class="cart-toggle" onclick="toggleCart()">
+      🛒 Cart
+      <span class="cart-badge hidden" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ CART DRAWER ═══ -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">Your Cart</div>
+    <button class="drawer-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems">
+    <div class="drawer-empty">Your cart is empty.<br/>Add an engine to get started.</div>
+  </div>
+  <div class="drawer-footer">
+    <div class="drawer-totals">
+      <div class="drawer-row"><span>Subtotal</span><span id="drawerSubtotal">$0</span></div>
+      <div class="drawer-row"><span>Shipping</span><span id="drawerShipping">FREE</span></div>
+      <div class="drawer-row total"><span>Total</span><span id="drawerTotal">$0</span></div>
+    </div>
+    <button class="drawer-checkout-btn" id="drawerCheckoutBtn" onclick="cartCheckout()" disabled>
+      🔒 Checkout with Stripe
+    </button>
+    <div class="drawer-secure">256-bit SSL · Powered by Stripe · All major cards accepted</div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-tag">Performance Engine Specialists</div>
+  <h1>Built for <em>Raw</em> Power</h1>
+  <div class="red-divider"></div>
+  <p>Gits Motors supplies premium crate engines — LS 5.3, LS 6.0, and Hellcat — ready to drop in and dominate the road or track.</p>
+  <div class="hero-ctas">
+    <button class="hero-btn" onclick="scrollTo('#motors')">Shop Motors</button>
+    <button class="hero-btn-outline" onclick="scrollTo('#contact')">Get a Quote</button>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>✓</span> Free Standard Shipping</div>
+  <div class="trust-item"><span>✓</span> 90-Day Warranty</div>
+  <div class="trust-item"><span>✓</span> Inspected & Tested</div>
+  <div class="trust-item"><span>✓</span> Secure Stripe Checkout</div>
+  <div class="trust-item"><span>✓</span> 500+ Engines Sold</div>
+</div>
+
+<!-- ═══ MOTORS ═══ -->
+<section id="motors">
+  <div class="motors-header">
+    <div class="section-label">Our Lineup</div>
+    <div class="section-title">Choose Your Engine</div>
+  </div>
+  <div class="motors-grid">
+
+    <!-- LS 5.3 -->
+    <div class="motor-card">
+      <div class="motor-badge">Best Seller</div>
+      <div class="motor-img-wrap">
+        <img src="ST-1812-WHEL-02a.webp" alt="LS 5.3 Engine" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','fallback-ls53')"/>
+      </div>
+      <div class="motor-card-body">
+        <h3>LS 5.3L</h3>
+        <div class="motor-price">$3,200</div>
+        <p>The king of engine swaps. Reliable, tunable, and perfect for trucks, muscle cars, and performance builds.</p>
+        <div class="motor-specs-mini">
+          <div class="spec-chip">323 cu in</div>
+          <div class="spec-chip">315–345 HP</div>
+          <div class="spec-chip">V8 OHV</div>
+          <div class="spec-chip">Iron Block</div>
+        </div>
+        <div class="ship-selector">
+          <div class="ship-selector-label">Shipping Method</div>
+          <div class="ship-opts" id="ship-ls53">
+            <div class="ship-opt active" onclick="selectShip('ls53',0,'Standard Freight (7–14 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Standard Freight</div><div class="ship-opt-eta">7–14 Business Days</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls53',149,'Expedited (3–5 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Expedited Freight</div><div class="ship-opt-eta">3–5 Business Days</div></div></div>
+              <div class="ship-opt-price">$149</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls53',299,'Priority Express (1–2 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Priority Express</div><div class="ship-opt-eta">1–2 Business Days</div></div></div>
+              <div class="ship-opt-price">$299</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls53',0,'Local Pickup',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Local Pickup</div><div class="ship-opt-eta">Same Day Available</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+          </div>
+        </div>
+        <div class="engine-stripe-btns">
+          <a class="stripe-buy-btn" href="https://buy.stripe.com/test_cNidRa2cB1Vw4modSAdMI01" target="_blank">⚡ Buy Now — Checkout with Stripe</a>
+          <button class="stripe-add-btn" onclick="addToCart('ls53')">+ Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LS 6.0 -->
+    <div class="motor-card">
+      <div class="motor-img-wrap">
+        <img src="s-l1200.jpg" alt="LS 6.0 Engine" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','fallback-ls60')"/>
+      </div>
+      <div class="motor-card-body">
+        <h3>LS 6.0L</h3>
+        <div class="motor-price">$4,100</div>
+        <p>More displacement, more torque. Built for heavy builds, tow rigs, and high-powered street cars.</p>
+        <div class="motor-specs-mini">
+          <div class="spec-chip">364 cu in</div>
+          <div class="spec-chip">325–380 HP</div>
+          <div class="spec-chip">V8 OHV</div>
+          <div class="spec-chip">Iron Block</div>
+        </div>
+        <div class="ship-selector">
+          <div class="ship-selector-label">Shipping Method</div>
+          <div class="ship-opts" id="ship-ls60">
+            <div class="ship-opt active" onclick="selectShip('ls60',0,'Standard Freight (7–14 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Standard Freight</div><div class="ship-opt-eta">7–14 Business Days</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls60',149,'Expedited (3–5 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Expedited Freight</div><div class="ship-opt-eta">3–5 Business Days</div></div></div>
+              <div class="ship-opt-price">$149</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls60',299,'Priority Express (1–2 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Priority Express</div><div class="ship-opt-eta">1–2 Business Days</div></div></div>
+              <div class="ship-opt-price">$299</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('ls60',0,'Local Pickup',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Local Pickup</div><div class="ship-opt-eta">Same Day Available</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+          </div>
+        </div>
+        <div class="engine-stripe-btns">
+          <a class="stripe-buy-btn" href="https://buy.stripe.com/test_6oU6oI18x0RsaKMbKsdMI02" target="_blank">⚡ Buy Now — Checkout with Stripe</a>
+          <button class="stripe-add-btn" onclick="addToCart('ls60')">+ Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HELLCAT -->
+    <div class="motor-card">
+      <div class="motor-badge" style="background:#c0392b;">Most Powerful</div>
+      <div class="motor-img-wrap">
+        <img src="Hellcat-Hellcrate-engine-68303089AA.jpg" alt="Hellcat Engine" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','fallback-hellcat')"/>
+      </div>
+      <div class="motor-card-body">
+        <h3>Hellcat 6.2L</h3>
+        <div class="motor-price">$8,500</div>
+        <p>707+ HP supercharged American fury. The most brutal street-legal engine on the market.</p>
+        <div class="motor-specs-mini">
+          <div class="spec-chip">376 cu in</div>
+          <div class="spec-chip">707+ HP</div>
+          <div class="spec-chip">Supercharged</div>
+          <div class="spec-chip">HEMI V8</div>
+        </div>
+        <div class="ship-selector">
+          <div class="ship-selector-label">Shipping Method</div>
+          <div class="ship-opts" id="ship-hellcat">
+            <div class="ship-opt active" onclick="selectShip('hellcat',0,'Standard Freight (7–14 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Standard Freight</div><div class="ship-opt-eta">7–14 Business Days</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hellcat',149,'Expedited (3–5 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Expedited Freight</div><div class="ship-opt-eta">3–5 Business Days</div></div></div>
+              <div class="ship-opt-price">$149</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hellcat',299,'Priority Express (1–2 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Priority Express</div><div class="ship-opt-eta">1–2 Business Days</div></div></div>
+              <div class="ship-opt-price">$299</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hellcat',0,'Local Pickup',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Local Pickup</div><div class="ship-opt-eta">Same Day Available</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+          </div>
+        </div>
+        <div class="engine-stripe-btns">
+          <a class="stripe-buy-btn" href="https://buy.stripe.com/test_eVq6oI2cB9nY9GIdSAdMI03" target="_blank">⚡ Buy Now — Checkout with Stripe</a>
+          <button class="stripe-add-btn" onclick="addToCart('hellcat')">+ Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section id="why">
+  <div class="why-text">
+    <div class="section-label">Why Gits Motors</div>
+    <div class="section-title">We Know Engines</div>
+    <div class="red-divider"></div>
+    <p>We're not a big-box parts store. Every engine that leaves our shop is inspected, tested, and ready to perform. Our team lives and breathes performance motors.</p>
+    <div class="stats">
+      <div><div class="stat-num">500+</div><div class="stat-label">Engines Sold</div></div>
+      <div><div class="stat-num">12+</div><div class="stat-label">Years Experience</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">Satisfaction</div></div>
+    </div>
+  </div>
+  <div class="why-features">
+    <div class="feature"><div class="feature-icon">✓</div><div><h4>Inspected & Tested</h4><p>Every motor is run through our quality check before it ships to you.</p></div></div>
+    <div class="feature"><div class="feature-icon">⚡</div><div><h4>Fast Nationwide Shipping</h4><p>Professionally crated and palletized — delivered to all 48 states.</p></div></div>
+    <div class="feature"><div class="feature-icon">🔒</div><div><h4>Secure Stripe Checkout</h4><p>Payment processed by Stripe — the most trusted checkout on the internet.</p></div></div>
+    <div class="feature"><div class="feature-icon">🔧</div><div><h4>Expert Support</h4><p>Real engine guys available to answer your questions before and after purchase.</p></div></div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <div class="section-title">Ready to Order?</div>
+  <p>Call us, shoot us an email, or stop by. We're here to help you find the right motor.</p>
+  <div class="contact-grid">
+    <div class="contact-item"><div class="ci-label">Phone</div><div class="ci-val">(555) 000-0000</div></div>
+    <div class="contact-item"><div class="ci-label">Email</div><div class="ci-val">sales@gitsmotors.com</div></div>
+    <div class="contact-item"><div class="ci-label">Hours</div><div class="ci-val">Mon–Sat 8am–6pm</div></div>
+  </div>
+  <a href="mailto:sales@gitsmotors.com" class="contact-btn">Email Us Now</a>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">GITS<span>.</span>MOTORS</div>
+  <p>© 2026 Gits Motors. All rights reserved. Payments secured by Stripe.</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toastMsg">Added to cart</span>
+</div>
+
+<script>
+  /* ── Catalog ── */
+  const CAT = {
+    ls53:    { id:'ls53',    name:'LS 5.3L Engine',  price:3200, img:'ST-1812-WHEL-02a.webp',                   stripeLink:'https://buy.stripe.com/test_cNidRa2cB1Vw4modSAdMI01' },
+    ls60:    { id:'ls60',    name:'LS 6.0L Engine',  price:4100, img:'s-l1200.jpg',                             stripeLink:'https://buy.stripe.com/test_6oU6oI18x0RsaKMbKsdMI02' },
+    hellcat: { id:'hellcat', name:'Hellcat 6.2L',    price:8500, img:'Hellcat-Hellcrate-engine-68303089AA.jpg', stripeLink:'https://buy.stripe.com/test_eVq6oI2cB9nY9GIdSAdMI03' }
+  };
+
+  /* ── State ── */
+  let cart = [];
+  let shipSelections = { ls53: { price:0, label:'Standard Freight (7–14 Days)' }, ls60: { price:0, label:'Standard Freight (7–14 Days)' }, hellcat: { price:0, label:'Standard Freight (7–14 Days)' } };
+
+  /* ── Scroll ── */
+  function scrollTo(sel) { document.querySelector(sel)?.scrollIntoView({ behavior:'smooth' }); }
+
+  /* ── Shipping Selection ── */
+  function selectShip(id, price, label, el) {
+    shipSelections[id] = { price, label };
+    document.querySelectorAll(`#ship-${id} .ship-opt`).forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  /* ── Cart ── */
+  function addToCart(id) {
+    const p = CAT[id];
+    const ship = { ...shipSelections[id] };
+    const existing = cart.find(c => c.id === id);
+    if (existing) { existing.qty++; existing.ship = ship; }
+    else { cart.push({ ...p, qty:1, ship }); }
+    updateBadge();
+    renderDrawer();
+    showToast(`${p.name} added to cart!`);
+    openCart();
+  }
+
+  function changeQty(id, delta) {
+    const item = cart.find(c => c.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+    updateBadge();
+    renderDrawer();
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(c => c.id !== id);
+    updateBadge();
+    renderDrawer();
+  }
+
+  function updateBadge() {
+    const n = cart.reduce((s,i) => s+i.qty, 0);
+    const el = document.getElementById('cartBadge');
+    el.textContent = n;
+    el.classList.toggle('hidden', n === 0);
+  }
+
+  /* ── Render Drawer ── */
+  function renderDrawer() {
+    const container = document.getElementById('drawerItems');
+    const btn = document.getElementById('drawerCheckoutBtn');
+
+    if (cart.length === 0) {
+      container.innerHTML = '<div class="drawer-empty">Your cart is empty.<br/>Add an engine to get started.</div>';
+      btn.disabled = true;
+      document.getElementById('drawerSubtotal').textContent = '$0';
+      document.getElementById('drawerShipping').textContent = 'FREE';
+      document.getElementById('drawerTotal').textContent = '$0';
+      return;
+    }
+
+    btn.disabled = false;
+    container.innerHTML = cart.map(item => `
+      <div class="drawer-item">
+        <img class="drawer-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.background='#1a1a1a';this.removeAttribute('src')"/>
+        <div>
+          <div class="drawer-item-name">${item.name}</div>
+          <div class="drawer-item-price">$${item.price.toLocaleString()} each</div>
+          <div style="font-size:0.65rem;color:#555;margin-top:0.2rem;">🚚 ${item.ship.label}</div>
+        </div>
+        <div class="drawer-item-right">
+          <div class="d-qty">
+            <button class="d-qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+            <span class="d-qty-num">${item.qty}</span>
+            <button class="d-qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          </div>
+          <button class="d-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+        </div>
+      </div>
+    `).join('');
+
+    const sub  = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const ship = cart.reduce((s,i) => s + (i.ship.price||0) * i.qty, 0);
+    const total = sub + ship;
+
+    document.getElementById('drawerSubtotal').textContent = '$' + sub.toLocaleString();
+    document.getElementById('drawerShipping').textContent = ship === 0 ? 'FREE' : '$' + ship.toLocaleString();
+    document.getElementById('drawerTotal').textContent = '$' + total.toLocaleString();
+  }
+
+  /* ── Cart Checkout ── */
+  function cartCheckout() {
+    // If only one item go straight to its Stripe link
+    if (cart.length === 1) {
+      window.open(CAT[cart[0].id].stripeLink, '_blank');
+      return;
+    }
+    // Multiple items — open the first item's Stripe link
+    // (For multi-item checkout you'd need a Stripe backend — for now send to first)
+    window.open(CAT[cart[0].id].stripeLink, '_blank');
+  }
+
+  /* ── Cart Toggle ── */
+  function openCart() {
+    document.getElementById('cartDrawer').classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function toggleCart() {
+    const open = document.getElementById('cartDrawer').classList.toggle('open');
+    document.getElementById('cartOverlay').classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  /* Init */
+  renderDrawer();
+</script>
+</body>
+</html>
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: #fff; font-size: 0.6rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     .cart-count.hidden { display: none; }
 
