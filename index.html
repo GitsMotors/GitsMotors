@@ -109,6 +109,7 @@
     .fallback-ls60 { background: linear-gradient(135deg,#1a1a1a,#0a1a2a); }
     .fallback-hellcat { background: linear-gradient(135deg,#1a0808,#2a0a0a); }
     .fallback-ls427 { background: linear-gradient(135deg,#1a1a1a,#0a2a1a); }
+    .fallback-hemi392 { background: linear-gradient(135deg,#1a0a00,#2a1500); }
     .motor-badge { position: absolute; top: 1rem; left: 1rem; background: var(--red); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.28rem 0.7rem; color: #fff; z-index: 1; }
     .motor-card-body { padding: 1.5rem; border-top: 2px solid var(--red); }
     .motor-card-body h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 0.15rem; }
@@ -227,7 +228,7 @@
   <div class="hero-tag">Performance Engine Specialists</div>
   <h1>Built for <em>Raw</em> Power</h1>
   <div class="red-divider"></div>
-  <p>Gits Motors supplies premium crate engines — LS 5.3, LS 6.0, Hellcat, and BluePrint LS 427 — ready to drop in and dominate.</p>
+  <p>Gits Motors supplies premium crate engines — LS 5.3, LS 6.0, Hellcat, BluePrint LS 427, and 392 HEMI — ready to drop in and dominate.</p>
   <div class="hero-ctas">
     <button class="hero-btn" onclick="scrollTo('#motors')">Shop Motors</button>
     <button class="hero-btn-outline" onclick="scrollTo('#contact')">Get a Quote</button>
@@ -426,6 +427,50 @@
       </div>
     </div>
 
+    <!-- 392 HEMI — NEW PRODUCT -->
+    <div class="motor-card">
+      <div class="motor-badge" style="background:#7b2d00;">Mopar Performance</div>
+      <div class="motor-img-wrap">
+        <img src="https://protouringstore.com/cdn/shop/products/68303090AB_2.jpg" alt="392 HEMI 6.4L Crate Engine" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','fallback-hemi392')"/>
+      </div>
+      <div class="motor-card-body">
+        <h3>392 HEMI 6.4L</h3>
+        <div class="motor-price">$5,200</div>
+        <p>Gen III SRT 6.4L HEMI crate engine by Mopar Performance. Complete assembly with water pump, flywheel &amp; clutch, oil pan, intake manifold with throttle body, fuel injectors, and coil packs. No MDS — pure performance.</p>
+        <div class="motor-specs-mini">
+          <div class="spec-chip">392 cu in</div>
+          <div class="spec-chip">485 HP</div>
+          <div class="spec-chip">475 lb-ft</div>
+          <div class="spec-chip">Gen III HEMI V8</div>
+        </div>
+        <div class="ship-selector">
+          <div class="ship-selector-label">Shipping Method</div>
+          <div class="ship-opts" id="ship-hemi392">
+            <div class="ship-opt active" onclick="selectShip('hemi392',0,'Standard Freight (7–14 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Standard Freight</div><div class="ship-opt-eta">7–14 Business Days</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hemi392',149,'Expedited (3–5 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Expedited Freight</div><div class="ship-opt-eta">3–5 Business Days</div></div></div>
+              <div class="ship-opt-price">$149</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hemi392',299,'Priority Express (1–2 Days)',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Priority Express</div><div class="ship-opt-eta">1–2 Business Days</div></div></div>
+              <div class="ship-opt-price">$299</div>
+            </div>
+            <div class="ship-opt" onclick="selectShip('hemi392',0,'Local Pickup',this)">
+              <div class="ship-opt-left"><div class="ship-dot"></div><div><div class="ship-opt-name">Local Pickup</div><div class="ship-opt-eta">Same Day Available</div></div></div>
+              <div class="ship-opt-price free">FREE</div>
+            </div>
+          </div>
+        </div>
+        <div class="engine-stripe-btns">
+          <a class="stripe-buy-btn" href="https://buy.stripe.com/9B64gzfXN7u24U89LB5sA04" target="_blank">⚡ Buy Now — Checkout with Stripe</a>
+          <button class="stripe-add-btn" onclick="addToCart('hemi392')">+ Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -477,10 +522,11 @@
 
 <script>
   const CAT = {
-    ls53:    { id:'ls53',    name:'LS 5.3L Engine',        price:3200, img:'ST-1812-WHEL-02a.webp',                                                          stripeLink:'https://buy.stripe.com/eVqdR98vl3dMcmA4rh5sA00' },
-    ls60:    { id:'ls60',    name:'LS 6.0L Engine',        price:4100, img:'s-l1200.jpg',                                                                    stripeLink:'https://buy.stripe.com/dRmeVd7rh4hQeuIaPF5sA02' },
-    hellcat: { id:'hellcat', name:'Hellcat 6.2L',          price:8500, img:'Hellcat-Hellcrate-engine-68303089AA.jpg',                                        stripeLink:'https://buy.stripe.com/00w5kD3b15lUeuIf5V5sA01' },
-    ls427:   { id:'ls427',   name:'LS 427 BluePrint 585HP',price:5400, img:'https://blueprintengines.com/cdn/shop/files/BLS4278KT56_1.jpg?v=1773335853',     stripeLink:'https://buy.stripe.com/8x2fZhbHxdSqgCQe1R5sA03' }
+    ls53:    { id:'ls53',    name:'LS 5.3L Engine',           price:3200, img:'ST-1812-WHEL-02a.webp',                                                          stripeLink:'https://buy.stripe.com/eVqdR98vl3dMcmA4rh5sA00' },
+    ls60:    { id:'ls60',    name:'LS 6.0L Engine',           price:4100, img:'s-l1200.jpg',                                                                    stripeLink:'https://buy.stripe.com/dRmeVd7rh4hQeuIaPF5sA02' },
+    hellcat: { id:'hellcat', name:'Hellcat 6.2L',             price:8500, img:'Hellcat-Hellcrate-engine-68303089AA.jpg',                                        stripeLink:'https://buy.stripe.com/00w5kD3b15lUeuIf5V5sA01' },
+    ls427:   { id:'ls427',   name:'LS 427 BluePrint 585HP',   price:5400, img:'https://blueprintengines.com/cdn/shop/files/BLS4278KT56_1.jpg?v=1773335853',     stripeLink:'https://buy.stripe.com/8x2fZhbHxdSqgCQe1R5sA03' },
+    hemi392: { id:'hemi392', name:'392 HEMI 6.4L 485HP',      price:5200, img:'https://protouringstore.com/cdn/shop/products/68303090AB_2.jpg',                 stripeLink:'https://buy.stripe.com/9B64gzfXN7u24U89LB5sA04' }
   };
 
   let cart = [];
@@ -488,7 +534,8 @@
     ls53:    { price:0, label:'Standard Freight (7–14 Days)' },
     ls60:    { price:0, label:'Standard Freight (7–14 Days)' },
     hellcat: { price:0, label:'Standard Freight (7–14 Days)' },
-    ls427:   { price:0, label:'Standard Freight (7–14 Days)' }
+    ls427:   { price:0, label:'Standard Freight (7–14 Days)' },
+    hemi392: { price:0, label:'Standard Freight (7–14 Days)' }
   };
 
   function scrollTo(sel) { document.querySelector(sel)?.scrollIntoView({ behavior:'smooth' }); }
@@ -598,4 +645,4 @@
   renderDrawer();
 </script>
 </body>
-</html>
+            </html>
